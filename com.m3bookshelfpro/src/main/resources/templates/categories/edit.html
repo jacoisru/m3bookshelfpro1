@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Category</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Edit Category</h2>
+    <form th:action="@{/categories/edit/{id}(id=${category.id})}" th:object="${category}" method="post">
+        <div class="mb-3">
+            <label>Name</label>
+            <input type="text" class="form-control" th:field="*{name}" required/>
+        </div>
+        <div class="mb-3">
+            <label>Description</label>
+            <input type="text" class="form-control" th:field="*{description}"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Category</button>
+        <a href="/categories" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
