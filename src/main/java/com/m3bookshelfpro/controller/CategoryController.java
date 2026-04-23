@@ -9,15 +9,35 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * MVC Controller handling all HTTP requests for Category operations.
+ *
+ * <p>Maps to the {@code /categories} URL path and delegates all business
+ * logic to {@link CategoryService}. Returns Thymeleaf template names
+ * for view rendering. All methods include SLF4J entry and exit logging.</p>
+ *
+ * @author Jacob Israel
+ * @author Peyton Wolf
+ * @version 4.0
+ * @see CategoryService
+ */
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {
 
+    /** SLF4J logger for this controller class. */
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
+    /** Service layer for category business logic. */
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * Displays a list of all categories.
+     *
+     * @param model the Spring MVC model used to pass data to the view
+     * @return the Thymeleaf template name {@code categories/list}
+     */
     @GetMapping
     public String listCategories(Model model) {
         logger.info("ENTRY: listCategories()");
@@ -26,6 +46,12 @@ public class CategoryController {
         return "categories/list";
     }
 
+    /**
+     * Displays the form for adding a new category.
+     *
+     * @param model the Spring MVC model used to pass data to the view
+     * @return the Thymeleaf template name {@code categories/add}
+     */
     @GetMapping("/add")
     public String showAddForm(Model model) {
         logger.info("ENTRY: showAddForm()");
@@ -34,6 +60,12 @@ public class CategoryController {
         return "categories/add";
     }
 
+    /**
+     * Processes the form submission to add a new category.
+     *
+     * @param category the {@link Category} object populated from the form
+     * @return redirect to {@code /categories} after saving
+     */
     @PostMapping("/add")
     public String addCategory(@ModelAttribute Category category) {
         logger.info("ENTRY: addCategory() - name={}", category.getName());
@@ -42,6 +74,13 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
+    /**
+     * Displays the form for editing an existing category.
+     *
+     * @param id    the unique ID of the category to edit
+     * @param model the Spring MVC model used to pass data to the view
+     * @return the Thymeleaf template name {@code categories/edit}
+     */
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         logger.info("ENTRY: showEditForm() - id={}", id);
@@ -50,6 +89,13 @@ public class CategoryController {
         return "categories/edit";
     }
 
+    /**
+     * Processes the form submission to update an existing category.
+     *
+     * @param id       the unique ID of the category being updated
+     * @param category the {@link Category} object populated from the form
+     * @return redirect to {@code /categories} after saving
+     */
     @PostMapping("/edit/{id}")
     public String editCategory(@PathVariable Long id, @ModelAttribute Category category) {
         logger.info("ENTRY: editCategory() - id={}", id);
@@ -59,6 +105,12 @@ public class CategoryController {
         return "redirect:/categories";
     }
 
+    /**
+     * Deletes a category by its unique identifier.
+     *
+     * @param id the unique ID of the category to delete
+     * @return redirect to {@code /categories} after deletion
+     */
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id) {
         logger.info("ENTRY: deleteCategory() - id={}", id);
